@@ -1,4 +1,8 @@
 # ExperimentalEMG
-## Exploratory application fields of GRV EMG sensors for an interactive human-computer interface
+Exploratory application fields of GRV EMG sensors for an interactive human-computer interface
 
-### Overall goal of the project
+## Contents
+- Overall goals of the project
+- ...
+
+## Overall goals of the project
