@@ -12,31 +12,46 @@ const int THRESHOLD_MIN = 550;
 
 
 
-const int bufferSize = 10;  // Size of the rolling average buffer
-int sensorValues[bufferSize];  // Array for storing sensor values
+//-------------------------------------------------------
+const int numReadings = 10;
+int emgReadings[numReadings];
+int emgIndex = 0;
+int emgMaxThreshold = 0;
+//-------------------------------------------------------
 
-int calculateRollingAverage(int newValue) {
-  static int index = 0;  // Current index in the array
-  static int sum = 0;    // Sum of values in the array
 
-  // Subtract the oldest element from the sum
-  sum -= sensorValues[index];
+void AdaptiveThresholdAveraging(){
+  int emgValue = analogRead(OUTPUT_PIN);
 
-  // Add the new element to the sum
-  sum += newValue;
+  // Aktualisiere den maximalen Schwellenwert
+  emgMaxThreshold = max(emgMaxThreshold, emgValue);
 
-  // Store the new element in the array
-  sensorValues[index] = newValue;
+  // Aktualisiere den gleitenden Durchschnitt
+  emgReadings[emgIndex] = emgValue;
+  emgIndex = (emgIndex + 1) % numReadings;
 
-  // Increment the index and set it to 0 if it reaches the end of the array
-  index = (index + 1) % bufferSize;
+  // Berechne den Durchschnittswert
+  int emgAverage = 0;
+  for (int i = 0; i < numReadings; i++) {
+    emgAverage += emgReadings[i];
+  }
+  emgAverage /= numReadings;
+  Serial.print(200); // To freeze the lower limit
+  Serial.print(" ");
+  Serial.print(1200); // To freeze the upper limit
+  Serial.print(" ");
+  Serial.println(emgAverage); 
 
-  // Calculate the rolling average
-  int average = sum / bufferSize;
+   // Verwende den adaptiven Schwellenwert für die Muskelanspannungserkennung
+  if (emgValue > emgMaxThreshold * 0.8) {
+    // Muskel angespannt, simuliere Leertaste
+    // Keyboard.write(KEY_SPACE);
+    delay(100);
 
-  return average;
+
+    Serial.println("Ahhhhhh Hilfe"); 
+  }
 }
-
 
 void setup() {
   // initialize the serial communication:
@@ -49,6 +64,14 @@ void setup() {
  
   delay(5000); 
   
+
+
+ 
+  //-------------------------------------------------------
+  for (int i = 0; i < numReadings; i++) {
+    emgReadings[i] = 0;
+  }
+  //-------------------------------------------------------
 }
 
 void loop() {
@@ -57,6 +80,7 @@ void loop() {
     Serial.println('!');
   }
   else{
+    /*
     // send the value of analog input 0:
       Serial.print(200); // To freeze the lower limit
       Serial.print(" ");
@@ -65,6 +89,8 @@ void loop() {
       // Calculate the rolling average
       // int rollingAverage = calculateRollingAverage(analogRead(OUTPUT_PIN));
       Serial.println(analogRead(OUTPUT_PIN));  // To send all three 'data' points to the plotter
+    */
+    AdaptiveThresholdAveraging();    
   }
   //Wait for a bit to keep serial data from saturating
   delay(1);
