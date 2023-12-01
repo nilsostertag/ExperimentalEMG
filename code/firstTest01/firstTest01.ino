@@ -1,8 +1,10 @@
+#include <Keyboard.h>
+
 
 // all Pin 
 #define OUTPUT_PIN A0
-#define nLO 5 // SCL 
-#define pLO 4 // SDA 
+#define nLO PD0 // SCL 
+#define pLO PD1// SDA 
 
 
 
@@ -16,7 +18,7 @@ const int THRESHOLD_MIN = 550;
 const int numReadings = 10;
 int emgReadings[numReadings];
 int emgIndex = 0;
-int emgMaxThreshold = 0;
+int emgMaxThreshold = 1;
 //-------------------------------------------------------
 
 
@@ -36,20 +38,21 @@ void AdaptiveThresholdAveraging(){
     emgAverage += emgReadings[i];
   }
   emgAverage /= numReadings;
+  /*
   Serial.print(200); // To freeze the lower limit
   Serial.print(" ");
   Serial.print(1200); // To freeze the upper limit
   Serial.print(" ");
   Serial.println(emgAverage); 
-
+  */
    // Verwende den adaptiven Schwellenwert für die Muskelanspannungserkennung
   if (emgValue > emgMaxThreshold * 0.8) {
     // Muskel angespannt, simuliere Leertaste
-    // Keyboard.write(KEY_SPACE);
-    delay(100);
+    Keyboard.write(KEY_SPACE);
+    delay(300);
 
 
-    Serial.println("Ahhhhhh Hilfe"); 
+    //Serial.println("Ahhhhhh Hilfe"); 
   }
 }
 
