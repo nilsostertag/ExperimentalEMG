@@ -63,8 +63,8 @@ void loop() {
       Serial.print(1200); // To freeze the upper limit
       Serial.print(" ");
       // Calculate the rolling average
-      int rollingAverage = calculateRollingAverage(analogRead(OUTPUT_PIN));
-      Serial.println(rollingAverage);  // To send all three 'data' points to the plotter
+      // int rollingAverage = calculateRollingAverage(analogRead(OUTPUT_PIN));
+      Serial.println(analogRead(OUTPUT_PIN));  // To send all three 'data' points to the plotter
   }
   //Wait for a bit to keep serial data from saturating
   delay(1);
