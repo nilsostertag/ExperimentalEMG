@@ -14,10 +14,6 @@
 #define LED_PIN PD7     // Test LED
 */
 
-// Threshold
-// const int THRESHOLD_MA = 900; 
-// const int THRESHOLD_MIN = 550;
-
 //-------------------------------------------------------
 const int numReadings = 10;
 int emgReadings[numReadings];
@@ -57,8 +53,6 @@ void AdaptiveThresholdAveraging(){
     digitalWrite(LED_PIN, HIGH);
     delay(500);
     digitalWrite(LED_PIN, LOW);
-
-    //Serial.println("Help, muscle tension!");
   }
 }
 
@@ -75,8 +69,10 @@ void setup() {
   // on hold 
   // init the Keyboard in with German Layout
   // Keyboard.begin(); 
-  
+
+
   //-------------------------------------------------------
+  // need to check but can be ignore 
   for (int i = 0; i < numReadings; i++) {
     emgReadings[i] = 0;
   }
@@ -84,21 +80,11 @@ void setup() {
 }
 
 void loop() {
-  
   if((digitalRead(nLO) == 1)||(digitalRead(pLO) == 1)){
+    // Signal lost 
     Serial.println('!');
   }
   else{
-    /*
-    // send the value of analog input 0:
-      Serial.print(200); // To freeze the lower limit
-      Serial.print(" ");
-      Serial.print(1200); // To freeze the upper limit
-      Serial.print(" ");
-      // Calculate the rolling average
-      // int rollingAverage = calculateRollingAverage(analogRead(OUTPUT_PIN));
-      Serial.println(analogRead(OUTPUT_PIN));  // To send all three 'data' points to the plotter
-    */
     AdaptiveThresholdAveraging();    
   }
   //Wait for a bit to keep serial data from saturating
