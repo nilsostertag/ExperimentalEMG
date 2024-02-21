@@ -37,22 +37,24 @@ void AdaptiveThresholdAveraging(){
     emgAverage += emgReadings[i];
   }
   emgAverage /= numReadings;
+  /*
   Serial.print(200); // To freeze the lower limit
   Serial.print(" ");
   Serial.print(1200); // To freeze the upper limit
   Serial.print(" ");
   Serial.println(emgAverage);
 
+  */
   // Use the adaptive threshold for muscle tension detection
   if (emgValue > emgMaxThreshold * 0.8) {
-
     // on Hold
     // Muscle tense, simulate spacebar press
     // Keyboard.write(32);
     // Keyboard.print(KEY_SPACE);
-    digitalWrite(LED_PIN, HIGH);
-    delay(500);
-    digitalWrite(LED_PIN, LOW);
+    //digitalWrite(LED_PIN, HIGH);
+    Serial.println("#"); 
+    //delay(500);
+    //digitalWrite(LED_PIN, LOW);
   }
 }
 
